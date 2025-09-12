@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pecera Inteligente con ESP32</title>
+  <meta name="description" content="Landing page para el proyecto de pecera inteligente automatizada con ESP32, sensores y control desde app móvil." />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    /* Fondo abismo acuático oscuro */
+    body {
+      background: radial-gradient(ellipse at 50% 80%, #282d3a 0%, #000000 80%, #131527 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #cce7ff;
+      overflow-x: hidden;
+       background-image:
+      url('https://media.gettyimages.com/id/1629818920/es/foto/fondo-abstracto-de-la-onda-de-gravedad.jpg?s=1024x1024&w=gi&k=20&c=FMnx7f7uKVUkz-ox0ZO1GrALM4rFG089ILBnjZmoxGg='),
+      radial-gradient(ellipse at 50% 80%, #282d3a 0%, #000000 80%, #131527 100%);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-blend-mode: overlay;
+    }
+    
+
+    /* Animación de burbujas acuáticas */
+    .bubbles {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(204, 231, 255, 0.18);
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: rise 15s linear infinite;
+      filter: drop-shadow(0 0 8px #007bff);
+      mix-blend-mode: screen;
+    }
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    /* Futurista tech glow */
+    .glow-text {
+      text-shadow:
+        0 0 5px #00cfff,
+        0 0 10px #00cfff,
+        0 0 20px #00e0ff,
+        0 0 30px #00e0ff,
+        0 0 40px #00e0ff;
+    }
+
+    /* Botones con efecto neón */
+    .btn-neon {
+      background: transparent;
+      border: 2px solid #00e0ff;
+      color: #00e0ff;
+      padding: 0.75rem 2rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #00e0ff;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .btn-neon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #00e0ff, transparent);
+      transform: translateX(-100%) translateY(-50%);
+      transition: transform 0.5s ease;
+      z-index: -1;
+    }
+    .btn-neon:hover {
+      color: #001f3f;
+      background: #00e0ff;
+      box-shadow: 0 0 20px #00e0ff;
+    }
+    .btn-neon:hover::before {
+      transform: translateX(100%) translateY(-50%);
+    }
+
+    /* Secciones con fondo translúcido y blur */
+    section {
+      background: rgba(0, 20, 40, 0.65);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-radius: 1rem;
+      box-shadow: 0 0 32px rgba(0, 224, 255, 0.10);
+    }
+
+    /* Iconos con glow */
+    .feather {
+      stroke: #00e0ff !important;
+      filter: drop-shadow(0 0 4px #00e0ff);
+    }
+
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    footer {
+      background: #000c1a;
+      color: #66ccff;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Input focus */
+    input[type="email"] {
+      background: rgba(0, 31, 63, 0.8);
+      border: 2px solid #00e0ff;
+      color: #cce7ff;
+      transition: border-color 0.3s ease;
+    }
+    input[type="email"]:focus {
+      outline: none;
+      border-color: #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+      background: rgba(0, 31, 63, 0.95);
+    }
+
+    /* Responsive text sizes */
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+      h2 {
+        font-size: 2.5rem;
+      }
+    }
+  
+  /* ...código existente... */
+
+  /* LUCES Y LÍNEAS DIGITALES FUTURISTAS */
+  .digital-lights {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .digital-line {
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, #00aaff 0%, #001aff44 80%, transparent 100%);
+    opacity: 0.7;
+    filter: blur(0.5px) drop-shadow(0 0 8px #00e0ff);
+    animation: digital-line-anim linear forwards;
+  }
+  @keyframes digital-line-anim {
+    0% { height: 0; opacity: 0.7; }
+    80% { opacity: 1; }
+    100% { height: 100vh; opacity: 0; }
+  }
+  .digital-glow {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00e0ff55 0%, transparent 80%);
+    opacity: 0.25;
+    filter: blur(2px);
+    animation: digital-glow-anim 8s linear infinite;
+  }
+  @keyframes digital-glow-anim {
+    0% { opacity: 0.18; }
+    50% { opacity: 0.38; }
+    100% { opacity: 0.18; }
+  }
+</style>
+<body>
+  <!-- LUCES Y LÍNEAS DIGITALES FUTURISTAS -->
+  <div class="digital-lights" aria-hidden="true"></div>
+
+  <div class="bubbles" aria-hidden="true"></div>
+  <!-- ...resto del código... -->
+<script>
+  // ...código existente...
+
+  // LUCES Y LÍNEAS DIGITALES FUTURISTAS
+  const digitalLights = document.querySelector('.digital-lights');
+  // Líneas verticales animadas
+  for (let i = 0; i < 14; i++) {
+    const line = document.createElement('div');
+    line.className = 'digital-line';
+    line.style.left = `${Math.random() * 100}vw`;
+    line.style.animationDuration = `${6 + Math.random() * 8}s`;
+    line.style.animationDelay = `${Math.random() * 8}s`;
+    digitalLights.appendChild(line);
+    // Reiniciar animación al terminar
+    line.addEventListener('animationend', function restart() {
+      line.style.animation = 'none';
+      void line.offsetWidth; // trigger reflow
+      line.style.left = `${Math.random() * 100}vw`;
+      line.style.animationDuration = `${6 + Math.random() * 8}s`;
+      line.style.animationDelay = `${Math.random() * 8}s`;
+      line.style.animation = '';
+      line.removeEventListener('animationend', restart);
+      setTimeout(() => line.addEventListener('animationend', restart), 10);
+    });
+  }
+  // Glows digitales
+  for (let i = 0; i < 7; i++) {
+    const glow = document.createElement('div');
+    glow.className = 'digital-glow';
+    glow.style.left = `${Math.random() * 100}vw`;
+    glow.style.top = `${Math.random() * 100}vh`;
+    glow.style.animationDelay = `${Math.random() * 8}s`;
+    digitalLights.appendChild(glow);
+  }
+
+ const btnNeon = document.querySelector('.btn-neon');
+if (btnNeon) {
+  const audio = new Audio("https://cdn.pixabay.com/audio/2022/10/16/audio_12b6fae7b7.mp3");
+  audio.volume = 0.55;
+  btnNeon.addEventListener('mouseenter', () => {
+    audio.currentTime = 0;
+    audio.play();
+  });
+}
+</script>
+</body>
+  </style>
+</head>
+<body style="padding-top: 3.5rem;">
+  <!-- Pantalla de transición negra -->
+<div id="black-transition"
+     style="position:fixed;z-index:9999;inset:0;background:#000;transition:opacity 1.2s cubic-bezier(.4,0,.2,1);opacity:1;"></div>
+  <!-- Burbujas animadas -->
+  <div class="bubbles" aria-hidden="true"></div>
+
+  <!-- Hero -->
+  <section class="py-20 px-6 max-w-4xl mx-auto text-center relative z-10">
+   <div class="mb-6">
+  <span class="text-7xl animate-bounce" aria-label="Pez" id="main-hero-fish" style="display:inline-block;">🐠</span>
+    </div>
+    <h1 class="glow-text font-extrabold text-4xl md:text-5xl mb-6">Pecera Inteligente con ESP32</h1>
+    <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 leading-relaxed">
+      Automatiza y controla tu pecera desde cualquier lugar. Monitorea temperatura, controla iluminación y cuida a tus peces con tecnología IoT de última generación.
+    </p>
+    <a href="#contacto" class="btn-neon inline-block">Quiero saber más</a>
+  </section>
+
+  <!-- ¿Qué es este proyecto? -->
+  <section class="py-16 px-6 max-w-5xl mx-auto mt-12 reveal">
+    <h2 class="text-3xl font-bold glow-text mb-8 text-center">¿Qué es este proyecto?</h2>
+    <p class="text-cyan-100 text-lg mb-6 max-w-3xl mx-auto leading-relaxed">
+      Diseñamos un sistema automatizado para peceras, controlado por un <b>ESP32</b>, que permite:
+    </p>
+    <ul class="list-disc pl-8 space-y-3 text-cyan-200 max-w-3xl mx-auto mb-6">
+      <li>Medir la <b>temperatura</b> del agua en tiempo real.</li>
+      <li>Encender/apagar <b>bomba de aire</b> o <b>resistencia calefactora</b> automáticamente.</li>
+      <li>Regular la <b>iluminación LED</b> simulando ciclos de día y noche.</li>
+      <li>Controlar todo desde una <b>app móvil</b> con datos en vivo y control manual.</li>
+    </ul>
+    <p class="text-cyan-100 max-w-3xl mx-auto text-center font-semibold text-lg">¡Haz tu pecera más segura, autónoma y eficiente!</p>
+  </section>
+
+  <!-- ¿Cómo lo vamos a hacer? -->
+  <section class="py-16 px-6 max-w-5xl mx-auto mt-12 reveal">
+    <h2 class="text-3xl font-bold glow-text mb-10 text-center">¿Cómo lo vamos a hacer?</h2>
+    <div class="grid md:grid-cols-2 gap-12 text-cyan-200">
+      <div>
+        <h3 class="font-semibold text-cyan-300 mb-4 flex items-center space-x-2">
+          <i data-feather="thermometer"></i><span>Sensado</span>
+        </h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Sensor DS18B20 mide la temperatura del agua.</li>
+          <li>ESP32 lee y procesa los datos.</li>
+        </ul>
+        <h3 class="font-semibold text-cyan-300 mt-8 mb-4 flex items-center space-x-2">
+          <i data-feather="cpu"></i><span>Actuaciones</span>
+        </h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Relé digital para bomba/resistencia.</li>
+          <li>PWM para regular brillo de LEDs.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-cyan-300 mb-4 flex items-center space-x-2">
+          <i data-feather="smartphone"></i><span>Conectividad y App</span>
+        </h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>ESP32 se conecta por WiFi.</li>
+          <li>Datos y control desde app móvil (Blynk o web propia).</li>
+        </ul>
+        <h3 class="font-semibold text-cyan-300 mt-8 mb-4 flex items-center space-x-2">
+          <i data-feather="layers"></i><span>Integración</span>
+        </h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Todo programado en Arduino IDE o Micropython.</li>
+          <li>Prototipo funcional para exposición.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Componentes -->
+  <section class="py-16 px-6 max-w-5xl mx-auto mt-12 reveal">
+    <h2 class="text-3xl font-bold glow-text mb-10 text-center">¿Con qué lo vamos a hacer?</h2>
+    <div class="grid md:grid-cols-2 gap-12 text-cyan-200 max-w-3xl mx-auto">
+      <ul class="space-y-4">
+        <li><b>ESP32</b> (microcontrolador principal)</li>
+        <li>Sensor <b>DS18B20</b> sumergible</li>
+        <li>Módulo <b>relé</b> (bomba/resistencia)</li>
+      </ul>
+      <ul class="space-y-4">
+        <li>Tira o lámpara <b>LED</b> regulable</li>
+        <li><b>Fuente de alimentación</b> 5V/12V</li>
+        <li><b>App móvil</b> (Blynk o propia)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Funcionamiento -->
+  <section class="py-16 px-6 max-w-5xl mx-auto mt-12 reveal">
+    <h2 class="text-3xl font-bold glow-text mb-10 text-center">¿Cómo funciona?</h2>
+    <ol class="list-decimal pl-8 space-y-3 text-cyan-200 max-w-3xl mx-auto leading-relaxed">
+      <li>El ESP32 se conecta al WiFi y lee la temperatura del agua.</li>
+      <li>Si la temperatura baja de 24°C, activa la resistencia o bomba.</li>
+      <li>Si sube de 26°C, apaga la resistencia o bomba.</li>
+      <li>La iluminación LED se regula automáticamente o desde la app.</li>
+      <li>Desde la app puedes ver datos en tiempo real y controlar todo manualmente.</li>
+    </ol>
+    <div class="bg-cyan-900 bg-opacity-40 rounded-lg shadow-lg p-6 mt-10 max-w-3xl mx-auto text-cyan-100">
+      <p class="font-semibold mb-3 text-center text-lg glow-text">Resumen:</p>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Controlador inteligente para peceras con ESP32.</li>
+        <li>Automatización y control remoto vía WiFi.</li>
+        <li>Mejor cuidado y seguridad para tus peces.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="margin-top:2.5rem;"id="contacto" class="py-20 px-6 max-w-3xl mx-auto text-center reveal">
+    <h2 class="text-3xl font-bold glow-text mb-6">¿Te interesa este proyecto?</h2>
+    <p class="mb-10 text-cyan-200 text-lg leading-relaxed">
+      Déjanos tu correo y te enviaremos más información y el código fuente cuando esté disponible.
+    </p>
+    <form class="flex flex-col sm:flex-row gap-4 justify-center" onsubmit="handleSubmit(event)">
+      <input
+        type="email"
+        required
+        placeholder="Tu correo electrónico"
+        aria-label="Correo electrónico"
+        class="rounded-full px-6 py-3 text-cyan-900 font-semibold focus:outline-none w-full sm:w-auto"
+      />
+      <button type="submit" class="btn-neon">Quiero recibir info</button>
+    </form>
+    <p id="form-message" class="mt-4 text-cyan-300 font-medium"></p>
+  </section>
+
+  <!-- Integrantes -->
+  <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
+    <h3 class="text-xl font-semibold mb-4 glow-text">Integrantes del proyecto</h3>
+    <p class="text-lg">Lucas Fornero &amp; Juliana Muller</p>
+  </section>
+
+  <!-- Footer -->
+  <footer style="margin-top:2rem;"class="py-8 text-center">
+    <div class="mb-4">
+      <span class="text-4xl animate-pulse" aria-label="Pez">🐠</span>
+    </div>
+    <p class="mb-2">Proyecto Pecera Inteligente con ESP32 &copy; 2025</p>
+    <p class="text-cyan-400 text-sm">Hecho por entusiastas de la tecnología y el acuarismo.</p>
+  </footer>
+
+  <script>
+  // Feather icons
+  feather.replace();
+
+  // Animar burbujas acuáticas - MÁS burbujas y MÁS rápidas
+  const bubblesContainer = document.querySelector('.bubbles');
+  const bubbleCount = 500;
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  for (let i = 0; i < bubbleCount; i++) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    const size = randomRange(6, 34);
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.left = `${randomRange(0, 100)}vw`;
+    bubble.style.animationDuration = `${randomRange(3, 8)}s`;
+    bubble.style.animationDelay = `${randomRange(0, 12)}s`;
+    bubblesContainer.appendChild(bubble);
+  }
+
+  // --- PECES ANIMADOS ---
+  // Crea un contenedor para los peces
+  const fishContainer = document.createElement('div');
+  fishContainer.style.position = 'fixed';
+  fishContainer.style.top = 0;
+  fishContainer.style.left = 0;
+  fishContainer.style.width = '100vw';
+  fishContainer.style.height = '100vh';
+  fishContainer.style.pointerEvents = 'none';
+  fishContainer.style.zIndex = -1;
+  document.body.appendChild(fishContainer);
+
+  const fishEmojis = ['🐟','🐠','🐡','🦑','🦐','🦈'];
+  const fishCount = 12;
+
+  for (let i = 0; i < fishCount; i++) {
+    const fish = document.createElement('span');
+    fish.textContent = fishEmojis[Math.floor(Math.random() * fishEmojis.length)];
+    fish.style.position = 'absolute';
+    fish.style.fontSize = `${randomRange(1.5, 2.7)}rem`;
+    fish.style.top = `${randomRange(5, 90)}vh`;
+    fish.style.left = `${Math.random() < 0.5 ? '-10vw' : '110vw'}`;
+    fish.style.transition = 'none';
+    fish.style.filter = 'drop-shadow(0 0 8px #00e0ff)';
+    fishContainer.appendChild(fish);
+
+    // Dirección: izquierda a derecha o derecha a izquierda
+    const duration = randomRange(12, 28); // segundos
+
+    function animateFish(f) {
+      f.style.transition = 'none';
+      f.style.top = `${randomRange(5, 90)}vh`;
+      f.style.fontSize = `${randomRange(1.5, 2.7)}rem`;
+      if (Math.random() < 0.5) {
+        // izquierda a derecha
+        f.style.left = '-10vw';
+        f.style.transform = 'scaleX(1)';
+        setTimeout(() => {
+          f.style.transition = `left ${duration}s linear, top 2s ease`;
+          f.style.left = '110vw';
+        }, 50);
+      } else {
+        // derecha a izquierda
+        f.style.left = '110vw';
+        f.style.transform = 'scaleX(-1)';
+        setTimeout(() => {
+          f.style.transition = `left ${duration}s linear, top 2s ease`;
+          f.style.left = '-10vw';
+        }, 50);
+      }
+    }
+
+    animateFish(fish);
+
+    // Cuando termina la animación, vuelve a empezar en otro lugar
+    fish.addEventListener('transitionend', () => {
+      animateFish(fish);
+    });
+  }
+
+  // --- TIBURÓN GRANDE ---
+  function launchBigShark() {
+    const shark = document.createElement('span');
+    shark.textContent = '🦈';
+    shark.style.position = 'fixed';
+    shark.style.top = `${randomRange(20, 70)}vh`;
+    shark.style.left = '-20vw';
+    shark.style.fontSize = '7rem';
+    shark.style.zIndex = -1;
+    shark.style.pointerEvents = 'none';
+    shark.style.filter = 'drop-shadow(0 0 32px #00e0ff)';
+    shark.style.transition = 'left 12s linear';
+    document.body.appendChild(shark);
+
+    // Lanzar de izquierda a derecha
+    setTimeout(() => {
+      shark.style.left = '120vw';
+    }, 100);
+
+    // Eliminar después de cruzar la pantalla
+    shark.addEventListener('transitionend', () => {
+      shark.remove();
+    });
+  }
+
+  // Lanzar el tiburón grande cada 35-60 segundos, aleatorio
+  function scheduleBigShark() {
+    const nextTime = randomRange(35000, 60000);
+    setTimeout(() => {
+      launchBigShark();
+      scheduleBigShark();
+    }, nextTime);
+  }
+  scheduleBigShark();
+
+  // Scroll reveal simple
+  const revealElements = document.querySelectorAll('.reveal');
+  function revealOnScroll() {
+    const windowHeight = window.innerHeight;
+    revealElements.forEach(el => {
+      const elementTop = el.getBoundingClientRect().top;
+      if (elementTop < windowHeight - 100) {
+        el.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+
+  // Form submit handler (simulado)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const input = form.querySelector('input[type="email"]');
+    const message = document.getElementById('form-message');
+    if (input.value) {
+      message.textContent = `Gracias, ${input.value}! Te enviaremos la información pronto.`;
+      form.reset();
+    } else {
+      message.textContent = 'Por favor ingresa un correo válido.';
+    }
+  }
+  // Animación personalizada para el pez principal (hero)
+(function animateMainFish() {
+  const fish = document.getElementById('main-hero-fish');
+  if (!fish) return;
+  let direction = 1;
+  let pos = 0;
+  let angle = 0;
+  function swim() {
+    pos += direction * 0.6;
+    angle = Math.sin(pos / 8) * 8;
+    fish.style.transform = `translateX(${Math.sin(pos / 18) * 18}px) translateY(${Math.sin(pos / 9) * 8}px) rotate(${angle}deg) scaleX(${direction})`;
+    if (pos > 120 || pos < -120) direction *= -1;
+    requestAnimationFrame(swim);
+  }
+  swim();
+})();
+// Transición de negro a transparente al cargar la web
+window.addEventListener('DOMContentLoaded', function () {
+  setTimeout(() => {
+    const overlay = document.getElementById('black-transition');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 1300);
+  }, 200); // Puedes ajustar el retardo inicial si quieres
+});
+</script>
+</body>
+</html>
