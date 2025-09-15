@@ -158,10 +158,6 @@
         font-size: 2.5rem;
       }
     }
-  
-  /* ...código existente... */
-
-  /* LUCES Y LÍNEAS DIGITALES FUTURISTAS */
   .digital-lights {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -200,16 +196,14 @@
   }
   
 </style>
-<body>
+  </head>
+<body style="padding-top: 3.5rem;">
   <!-- LUCES Y LÍNEAS DIGITALES FUTURISTAS -->
   <div class="digital-lights" aria-hidden="true"></div>
 
   <div class="bubbles" aria-hidden="true"></div>
-  <!-- ...resto del código... -->
 <script>
-  // ...código existente...
-
-  // LUCES Y LÍNEAS DIGITALES FUTURISTAS
+  
   const digitalLights = document.querySelector('.digital-lights');
   // Líneas verticales animadas
   for (let i = 0; i < 14; i++) {
@@ -219,7 +213,7 @@
     line.style.animationDuration = `${6 + Math.random() * 8}s`;
     line.style.animationDelay = `${Math.random() * 8}s`;
     digitalLights.appendChild(line);
-    // Reiniciar animación al terminar
+    
     line.addEventListener('animationend', function restart() {
       line.style.animation = 'none';
       void line.offsetWidth; // trigger reflow
@@ -251,16 +245,12 @@ if (btnNeon) {
   });
 }
 </script>
-</body>
   </style>
-</head>
-<body style="padding-top: 3.5rem;">
   <!-- Pantalla de transición negra -->
 <div id="black-transition"
      style="position:fixed;z-index:9999;inset:0;background:#000;transition:opacity 1.2s cubic-bezier(.4,0,.2,1);opacity:1;"></div>
   <!-- Burbujas animadas -->
   <div class="bubbles" aria-hidden="true"></div>
-
   <!-- Hero -->
   <section class="py-20 px-6 max-w-4xl mx-auto text-center relative z-10">
    <div class="mb-6">
@@ -384,7 +374,11 @@ if (btnNeon) {
   </section>
 
   <!-- Integrantes -->
+<<<<<<< HEAD
 <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
+=======
+ <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
+>>>>>>> 1050ddb498fe31bffff6d6014cacf476ba712e05
   <h3 class="text-xl font-semibold mb-4 glow-text">Integrantes del proyecto</h3>
   <div class="flex flex-col items-center gap-4">
     <div class="flex items-center justify-center gap-2">
@@ -426,10 +420,8 @@ if (btnNeon) {
   </footer>
 
   <script>
-  // Feather icons
+  
   feather.replace();
-
-  // Animar burbujas acuáticas - MÁS burbujas y MÁS rápidas
   const bubblesContainer = document.querySelector('.bubbles');
   const bubbleCount = 500;
 
@@ -450,7 +442,6 @@ if (btnNeon) {
   }
 
   // --- PECES ANIMADOS ---
-  // Crea un contenedor para los peces
   const fishContainer = document.createElement('div');
   fishContainer.style.position = 'fixed';
   fishContainer.style.top = 0;
@@ -475,15 +466,15 @@ if (btnNeon) {
     fish.style.filter = 'drop-shadow(0 0 8px #00e0ff)';
     fishContainer.appendChild(fish);
 
-    // Dirección: izquierda a derecha o derecha a izquierda
-    const duration = randomRange(12, 28); // segundos
+    
+    const duration = randomRange(12, 28); 
 
     function animateFish(f) {
       f.style.transition = 'none';
       f.style.top = `${randomRange(5, 90)}vh`;
       f.style.fontSize = `${randomRange(1.5, 2.7)}rem`;
       if (Math.random() < 0.5) {
-        // izquierda a derecha
+        
         f.style.left = '-10vw';
         f.style.transform = 'scaleX(1)';
         setTimeout(() => {
@@ -491,7 +482,7 @@ if (btnNeon) {
           f.style.left = '110vw';
         }, 50);
       } else {
-        // derecha a izquierda
+        
         f.style.left = '110vw';
         f.style.transform = 'scaleX(-1)';
         setTimeout(() => {
@@ -503,7 +494,7 @@ if (btnNeon) {
 
     animateFish(fish);
 
-    // Cuando termina la animación, vuelve a empezar en otro lugar
+    
     fish.addEventListener('transitionend', () => {
       animateFish(fish);
     });
@@ -524,17 +515,18 @@ if (btnNeon) {
     shark.style.transition = 'left 12s linear';
     document.body.appendChild(shark);
 
-    // Lanzar de izquierda a derecha
+   
     setTimeout(() => {
       shark.style.left = '120vw';
     }, 100);
 
-    // Eliminar después de cruzar la pantalla
+    
     shark.addEventListener('transitionend', () => {
       shark.remove();
     });
   }
 
+<<<<<<< HEAD
   // Cada cierto tiempo lanzar un tiburón (ej: cada 40 a 70 segundos)
   setInterval(() => {
     if (Math.random() > 0.5) { // 50% de probabilidad de que aparezca
@@ -545,6 +537,9 @@ if (btnNeon) {
   
 
   // Lanzar el tiburón grande cada 35-60 segundos, aleatorio
+=======
+  
+>>>>>>> 1050ddb498fe31bffff6d6014cacf476ba712e05
   function scheduleBigShark() {
     const nextTime = randomRange(35000, 60000);
     setTimeout(() => {
@@ -603,7 +598,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('black-transition');
     overlay.style.opacity = '0';
     setTimeout(() => overlay.remove(), 1300);
-  }, 200); // Puedes ajustar el retardo inicial si quieres
+  }, 200); 
 });
 </script>
 </body>
