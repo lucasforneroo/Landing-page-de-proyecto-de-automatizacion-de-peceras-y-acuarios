@@ -374,11 +374,7 @@ if (btnNeon) {
   </section>
 
   <!-- Integrantes -->
-<<<<<<< HEAD
 <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
-=======
- <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
->>>>>>> 1050ddb498fe31bffff6d6014cacf476ba712e05
   <h3 class="text-xl font-semibold mb-4 glow-text">Integrantes del proyecto</h3>
   <div class="flex flex-col items-center gap-4">
     <div class="flex items-center justify-center gap-2">
@@ -526,57 +522,45 @@ if (btnNeon) {
     });
   }
 
-<<<<<<< HEAD
-  // Cada cierto tiempo lanzar un tiburón (ej: cada 40 a 70 segundos)
-  setInterval(() => {
-    if (Math.random() > 0.5) { // 50% de probabilidad de que aparezca
-      launchBigShark();
+// Cada cierto tiempo lanzar un tiburón grande (cada 35 a 60 segundos)
+function scheduleBigShark() {
+  const nextTime = randomRange(35000, 60000);
+  setTimeout(() => {
+    launchBigShark();
+    scheduleBigShark();
+  }, nextTime);
+}
+scheduleBigShark();
+
+// Scroll reveal animation
+const revealElements = document.querySelectorAll('.reveal');
+function revealOnScroll() {
+  const windowHeight = window.innerHeight;
+  revealElements.forEach(el => {
+    const elementTop = el.getBoundingClientRect().top;
+    if (elementTop < windowHeight - 100) {
+      el.classList.add('active');
     }
-  }, 40000);
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
 
-  
-
-  // Lanzar el tiburón grande cada 35-60 segundos, aleatorio
-=======
-  
->>>>>>> 1050ddb498fe31bffff6d6014cacf476ba712e05
-  function scheduleBigShark() {
-    const nextTime = randomRange(35000, 60000);
-    setTimeout(() => {
-      launchBigShark();
-      scheduleBigShark();
-    }, nextTime);
+// Form submit handler (simulado)
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const input = form.querySelector('input[type="email"]');
+  const message = document.getElementById('form-message');
+  if (input.value) {
+    message.textContent = `Gracias, ${input.value}! Te enviaremos la información pronto.`;
+    form.reset();
+  } else {
+    message.textContent = 'Por favor ingresa un correo válido.';
   }
-  scheduleBigShark();
+}
 
-  // Scroll reveal simple
-  const revealElements = document.querySelectorAll('.reveal');
-  function revealOnScroll() {
-    const windowHeight = window.innerHeight;
-    revealElements.forEach(el => {
-      const elementTop = el.getBoundingClientRect().top;
-      if (elementTop < windowHeight - 100) {
-        el.classList.add('active');
-      }
-    });
-  }
-  window.addEventListener('scroll', revealOnScroll);
-  window.addEventListener('load', revealOnScroll);
-
-  // Form submit handler (simulado)
-  function handleSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const input = form.querySelector('input[type="email"]');
-    const message = document.getElementById('form-message');
-    if (input.value) {
-      message.textContent = `Gracias, ${input.value}! Te enviaremos la información pronto.`;
-      form.reset();
-    } else {
-      message.textContent = 'Por favor ingresa un correo válido.';
-    }
-  }
-  // Animación personalizada para el pez principal (hero)
+// Animación personalizada para el pez principal (hero)
 (function animateMainFish() {
   const fish = document.getElementById('main-hero-fish');
   if (!fish) return;
@@ -592,6 +576,7 @@ if (btnNeon) {
   }
   swim();
 })();
+
 // Transición de negro a transparente al cargar la web
 window.addEventListener('DOMContentLoaded', function () {
   setTimeout(() => {
