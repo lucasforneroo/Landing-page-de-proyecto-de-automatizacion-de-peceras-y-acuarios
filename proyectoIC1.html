@@ -10,18 +10,19 @@
   <style>
     /* Fondo abismo acuático oscuro */
     body {
-      background: radial-gradient(ellipse at 50% 80%, #282d3a 0%, #000000 80%, #131527 100%);
+      background: radial-gradient(ellipse at 50% 80%, #2f2d5b 0%, #151624 80%, #243651 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #cce7ff;
       overflow-x: hidden;
        background-image:
       url('https://media.gettyimages.com/id/1629818920/es/foto/fondo-abstracto-de-la-onda-de-gravedad.jpg?s=1024x1024&w=gi&k=20&c=FMnx7f7uKVUkz-ox0ZO1GrALM4rFG089ILBnjZmoxGg='),
-      radial-gradient(ellipse at 50% 80%, #282d3a 0%, #000000 80%, #131527 100%);
+      radial-gradient(ellipse at 50% 80%, #0a1116 0%, #000000 80%, #0f1621 100%);
     background-size: cover, cover;
     background-position: center, center;
     background-repeat: no-repeat, no-repeat;
     background-blend-mode: overlay;
     }
+    /*https://media.gettyimages.com/id/1629818920/es/foto/fondo-abstracto-de-la-onda-de-gravedad.jpg?s=1024x1024&w=gi&k=20&c=FMnx7f7uKVUkz-ox0ZO1GrALM4rFG089ILBnjZmoxGg=
     
 
     /* Animación de burbujas acuáticas */
@@ -38,7 +39,7 @@
     .bubble {
       position: absolute;
       bottom: -100px;
-      background: rgba(204, 231, 255, 0.18);
+      background: rgba(122, 131, 161, 0.18);
       border-radius: 50%;
       opacity: 0.7;
       animation: rise 15s linear infinite;
@@ -95,7 +96,7 @@
     .btn-neon:hover {
       color: #001f3f;
       background: #00e0ff;
-      box-shadow: 0 0 20px #00e0ff;
+      box-shadow: 0 0 20px #00d0ff;
     }
     .btn-neon:hover::before {
       transform: translateX(100%) translateY(-50%);
@@ -112,7 +113,7 @@
     /* Iconos con glow */
     .feather {
       stroke: #00e0ff !important;
-      filter: drop-shadow(0 0 4px #00e0ff);
+      filter: drop-shadow(0 0 4px #00b3ff);
     }
 
     /* Scroll reveal animation */
@@ -197,6 +198,7 @@
     50% { opacity: 0.38; }
     100% { opacity: 0.18; }
   }
+  
 </style>
 <body>
   <!-- LUCES Y LÍNEAS DIGITALES FUTURISTAS -->
@@ -382,10 +384,37 @@ if (btnNeon) {
   </section>
 
   <!-- Integrantes -->
-  <section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
-    <h3 class="text-xl font-semibold mb-4 glow-text">Integrantes del proyecto</h3>
-    <p class="text-lg">Lucas Fornero &amp; Juliana Muller</p>
-  </section>
+<section style="margin-top:2.5rem;" class="py-12 px-6 max-w-3xl mx-auto text-center text-cyan-300 reveal">
+  <h3 class="text-xl font-semibold mb-4 glow-text">Integrantes del proyecto</h3>
+  <div class="flex flex-col items-center gap-4">
+    <div class="flex items-center justify-center gap-2">
+      <span>Lucas Fornero</span>
+      <a href="https://instagram.com/lucasfornero__" target="_blank" rel="noopener"
+         class="ml-2 text-cyan-400 hover:underline hover:text-cyan-200 flex items-center"
+         aria-label="Instagram de Lucas Fornero">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="black" style="filter: drop-shadow(0 0 6px #00e0ff); border-radius:5px;">
+          <rect width="18" height="18" x="3" y="3" rx="5" stroke="#00e0ff" stroke-width="2" fill="black"/>
+          <circle cx="12" cy="12" r="4" stroke="#00e0ff" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="7" r="1.2" fill="#00e0ff"/>
+        </svg>
+        <span class="ml-1 font-semibold">@lucasfornero__</span>
+      </a>
+    </div>
+    <div class="flex items-center justify-center gap-2">
+      <span>Juliana Muller</span>
+      <a href="https://instagram.com/julianmullerdj" target="_blank" rel="noopener"
+         class="ml-2 text-cyan-400 hover:underline hover:text-cyan-200 flex items-center"
+         aria-label="Instagram de Juliana Muller">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="black" style="filter: drop-shadow(0 0 6px #00e0ff); border-radius:5px;">
+          <rect width="18" height="18" x="3" y="3" rx="5" stroke="#00e0ff" stroke-width="2" fill="black"/>
+          <circle cx="12" cy="12" r="4" stroke="#00e0ff" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="7" r="1.2" fill="#00e0ff"/>
+        </svg>
+        <span class="ml-1 font-semibold">@julianmullerdj</span>
+      </a>
+      </div>
+  </div>
+</section>
 
   <!-- Footer -->
   <footer style="margin-top:2rem;"class="py-8 text-center">
@@ -481,6 +510,7 @@ if (btnNeon) {
   }
 
   // --- TIBURÓN GRANDE ---
+    // --- TIBURÓN GRANDE ---
   function launchBigShark() {
     const shark = document.createElement('span');
     shark.textContent = '🦈';
@@ -504,6 +534,15 @@ if (btnNeon) {
       shark.remove();
     });
   }
+
+  // Cada cierto tiempo lanzar un tiburón (ej: cada 40 a 70 segundos)
+  setInterval(() => {
+    if (Math.random() > 0.5) { // 50% de probabilidad de que aparezca
+      launchBigShark();
+    }
+  }, 40000);
+
+  
 
   // Lanzar el tiburón grande cada 35-60 segundos, aleatorio
   function scheduleBigShark() {
